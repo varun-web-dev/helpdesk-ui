@@ -4,7 +4,8 @@ import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2"
 import { BiSearchAlt } from "react-icons/bi"
 
 function TicketList() {
-  const [activeTicket, setActiveTicket] = useState(1)
+  const [activeTicket, setActiveTicket] = useState(1);
+  const [search,setSearch] = useState("")
 
   const tickets = [
     { id: 1, title: "Laudantium neque veritatis", date: "Jun 2" },
@@ -15,6 +16,10 @@ function TicketList() {
     { id: 6, title: "Eum consequatur", date: "May 20" },
 
   ]
+
+  const filteredTickets = tickets.filter(ticket =>
+    ticket.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="w-80 bg-[#f8fafc] border-r flex flex-col border border-gray-300">
@@ -40,14 +45,23 @@ function TicketList() {
             type="text"
             placeholder="Search tickets..."
             className="w-full text-sm outline-none"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
       </div>
 
       {/* Tickets */}
       <div className="overflow-y-auto border-t border-gray-300 flex-1 bg-white">
+        {
+          filteredTickets.length === 0 && (
+            <div className="p-4 text-center text-gray-500">
+              No tickets found.
+            </div>
+          )
+        }
 
-        {tickets.map((ticket) => (
+        {filteredTickets.map((ticket) => (
           <div
             key={ticket.id}
             onClick={() => setActiveTicket(ticket.id)}

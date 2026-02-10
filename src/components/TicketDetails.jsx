@@ -3,10 +3,32 @@ import { RxCross2 } from "react-icons/rx";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { LuBug } from "react-icons/lu";
 import { FiSend } from "react-icons/fi";
+import { SiRender } from "react-icons/si";
 
 const TicketDetails = () => {
   const [activeTab, setActiveTab] = useState("public");
+  const [message, setMessage] = useState("");
+  const [replies, setReplies] = useState([]);
 
+  const handleSend = () => {
+    if (message.trim() === "") return;
+    const newReply = {
+      id: Date.now(),
+      sender: "You",
+      content: message,
+      type: activeTab,
+      time: new Date().toLocaleString(),
+    };
+    setReplies([...replies, newReply]);
+    setMessage("");
+  }
+
+  const handleEnterKey = (e) => {
+    if(e.key === "Enter" && !e.shiftKey){
+      e.preventDefault();
+      handleSend();
+    }
+  }
   return (
     <div className="flex-1 bg-[#f8fafc] overflow-y-auto">
 
@@ -72,6 +94,9 @@ const TicketDetails = () => {
           {/* Message */}
           <div className="px-5 py-4">
             <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={handleEnterKey}
               placeholder={
                 activeTab === "public"
                   ? "Write a public reply..."
@@ -93,7 +118,9 @@ const TicketDetails = () => {
             </div>
 
             {/* Send Button */}
-            <button className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-black px-2 py-2 rounded-lg text-sm font-medium transition shadow-sm">
+            <button 
+            onClick={handleSend}
+            className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-black px-2 py-2 rounded-lg text-sm font-medium transition shadow-sm">
               <FiSend size={16} />
 
             </button>
@@ -103,31 +130,35 @@ const TicketDetails = () => {
         </div>
 
         {/* email card*/}
-        <div className="bg-white border border-gray-300 rounded-2xl shadow-sm p-5 space-y-4">
+
+        {replies.map((reply) => (
+        <div
+          key={reply.id}
+          className="bg-white border border-gray-300 rounded-2xl shadow-sm p-5 space-y-4"
+        >
 
           <div className="flex justify-between items-start">
             <div className="flex items-start gap-3">
-              <span className="w-7 h-7 rounded-full bg-red-300 flex items-center justify-center text-xs font-semibold text-gray-600">
-                AH
+              <span className="w-7 h-7 rounded-full bg-purple-300 flex items-center justify-center text-xs font-semibold text-gray-600">
+                {reply.sender === "You" ? "Y" : "VP"}
               </span>
               <div>
                 <h4 className="text-sm font-semibold text-gray-800">
-                  Allie Harmon
+                  {reply.sender}
                 </h4>
                 <p className="text-[10px] text-gray-500">
-                  To: Danny Amacher danny@capacity.com
+                 {reply.type === "public" ? "Public Reply" : "Private Comment"} 
                 </p>
               </div>
             </div>
 
             <div className="text-[10px] text-gray-500 text-right">
-              November 14, 2022 <br />
-              12:32 PM PST
+              {reply.time}
             </div>
           </div>
 
           <div className="text-sm text-gray-600 font-semibold leading-relaxed">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sequi recusandae blanditiis et nisi, mollitia impedit facilis assumenda reprehenderit est ipsum quis saepe maiores! Hic minus quae quo aut numquam, aperiam tenetur nisi. Veritatis, sapiente vel. Vitae delectus deleniti harum, sequi dicta, quod dolore, impedit error libero in exercitationem blanditiis pariatur suscipit at? Minima dolore a earum.
+            {reply.content}
           </div>
 
           {/* Attachment */}
@@ -143,35 +174,7 @@ const TicketDetails = () => {
           </div>
 
         </div>
-
-        {/* second email card */}
-        <div className="bg-white border border-gray-300 rounded-2xl shadow-sm p-5 space-y-4">
-
-          <div className="flex justify-between items-start">
-            <div className="flex items-start gap-3">
-              <span className="w-7 h-7 rounded-full bg-red-200 flex items-center justify-center text-xs font-semibold text-gray-600">
-                AH
-              </span>
-              <div>
-                <h4 className="text-sm font-semibold text-gray-800">
-                  Allie Harmon
-                </h4>
-                <p className="text-[10px] text-gray-500">
-                  To: Danny Amacher danny@capacity.com
-                </p>
-              </div>
-            </div>
-
-            <div className="text-[10px] text-gray-500 text-right">
-              November 14, 2022 <br />
-              12:32 PM PST
-            </div>
-          </div>
-
-          <div className="text-sm text-gray-600 font-semibold leading-relaxed">
-            Explicabo atque eum nostrum voluptatibus? Animi dolor ipsam omnis.
-          </div>
-        </div>
+        ))}
 
       </div>
     </div>

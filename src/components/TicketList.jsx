@@ -123,10 +123,7 @@ function TicketList({ toggleViews }) {
                 <option>Amit Patel</option>
                 <option>Sneha Gupta</option>
                 <option>Rajesh Kumar</option>
-                <option>Amit Patil</option>
-
-
-
+                <option>Amit Patil</option> 
               </select>
 
               <button className="text-blue-600 text-sm flex items-center gap-1">

@@ -2,24 +2,45 @@ import { useState } from "react"
 import { HiMenuAlt2 } from "react-icons/hi"
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2"
 import { BiSearchAlt } from "react-icons/bi"
+import { RxCross2 } from "react-icons/rx";
+import { FiSliders } from "react-icons/fi";
+
 
 function TicketList({ toggleViews }) {
   const [activeTicket, setActiveTicket] = useState(1);
-  const [search,setSearch] = useState("")
+  const [search,setSearch] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [tickets, setTickets] = useState([
+    { id: "APPS-01", title: "Laudantium neque veritatis",project:"Administrative",type:"Bug", status:"Open", Assignee:"Varun Pal", date: "Jun 2" },
+    { id: "APPS-02", title: "Molestiae saepe illum",project:"Support",type:"Task", status:"In Progress", Assignee:"Rahul Sharma", date: "Jun 1" },
+    { id: "APPS-03", title: "Quasi voluptate dolores",project:"Development",type:"Bug", status:"Closed", Assignee:"Priya Singh", date: "May 30" },
+    { id: "APPS-04", title: "Nisi consequatur",project:"Support",type:"Task", status:"Open", Assignee:"Amit Patel", date: "May 28" },
+    { id: "APPS-05", title: "Voluptas sed",project:"Development",type:"Bug", status:"In Progress", Assignee:"Sneha Gupta", date: "May 25" },
+    { id: "APPS-06", title: "Eum consequatur",project:"Administrative",type:"Task", status:"Closed", Assignee:"Rajesh Kumar", date: "May 20" },
+    { id: "APPS-07", title: "Lorem ipsum dolor sit amet",project:"Support",type:"Task", status:"Open", Assignee:"Varun Pal", date: "May 18" },
+    { id: "APPS-08", title: "Consectetur adipiscing elit",project:"Development",type:"Bug", status:"In Progress", Assignee:"Rahul Sharma", date: "May 15" },
+    { id: "APPS-09", title: "Sed do eiusmod tempor incididunt",project:"Administrative",type:"Task", status:"Closed", Assignee:"Priya Singh", date: "May 10" },
+    { id: "APPS-10", title: "Ut labore et dolore magna aliqua",project:"Support",type:"Bug", status:"Open", Assignee:"Amit Patel", date: "May 5" },
 
-  const tickets = [
-    { id: 1, title: "Laudantium neque veritatis", date: "Jun 2" },
-    { id: 2, title: "Molestiae saepe illum", date: "Jun 1" },
-    { id: 3, title: "Quasi voluptate dolores", date: "May 30" },
-    { id: 4, title: "Nisi consequatur", date: "May 28" },
-    { id: 5, title: "Voluptas sed", date: "May 25" },
-    { id: 6, title: "Eum consequatur", date: "May 20" },
+  ]);
+  const [filters,setFilters] = useState({
+    project:"All",
+    type:"All",
+    status:"All",
+    assignee:"All"
+  });
 
-  ]
+  
 
-  const filteredTickets = tickets.filter(ticket =>
-    ticket.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredTickets = tickets.filter(ticket => {
+    return(
+      (filters.project === "All" || ticket.project === filters.project) &&
+      (filters.type === "All" || ticket.type === filters.type) &&
+      (filters.status === "All" || ticket.status === filters.status) &&
+      (filters.assignee === "All" || ticket.Assignee === filters.assignee) &&
+      (ticket.title.toLowerCase().includes(search.toLowerCase()))
+    )
+  });
 
   return (
     <div className="w-auto bg-[#f8fafc] border-r flex flex-col border border-gray-300">
@@ -33,9 +54,106 @@ function TicketList({ toggleViews }) {
           <option>My Tickets</option>
           <option>All Tickets</option>
         </select>
-
-        <HiOutlineAdjustmentsHorizontal className="text-xl cursor-pointer" />
+        
+        <HiOutlineAdjustmentsHorizontal className="text-xl cursor-pointer" onClick={() => setShowFilters(!showFilters)} />
       </div>
+      {
+        showFilters && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center ">
+
+            {/* overlay */}
+            <div className="absolute inset-0 " 
+            onClick={() => setShowFilters(false)}></div>
+          
+            {/*Slide Panel*/}
+            <div className="relative w-90 bg-white rounded-2xl shadow-xl p-6 flex flex-col gap-6 h-120 animate-fadeIn">
+
+              {/* Header */}
+              <div className="flex justify-between items-center border-b pb-3">
+                <div className="flex items-center gap-2">
+                  <FiSliders className="text-blue-600" />
+                  <h2 className="text-lg font-semibold">
+                    Ticket Filter
+                  </h2>
+                </div>
+                <button className="text-gray-400 hover:text-black" onClick={()=>{setShowFilters(false)}}>
+                  Reset
+                </button>
+                </div>
+
+            {/* Filter Feilds */}
+            <div className="space-y-4">
+              <select 
+              value={filters.project}
+              onChange={(e)=> setFilters({...filters,project:e.target.value})}
+              className="w-full border border-gray-300 rounded-lg px-2 py-1 text-sm">
+                <option>Type: All</option>
+                <option>Administrative</option>
+                <option>Support</option>
+                <option>Development</option>
+              </select>
+
+              <select 
+              value={filters.type}
+              onChange={(e)=> setFilters({...filters,type:e.target.value})}
+              className="w-full border border-gray-300 rounded-lg px-2 py-1 text-sm">
+                <option>Type: All</option>
+                <option>Task</option>
+                <option>Bug</option>
+              </select>
+
+              <select 
+              value={filters.status}
+              onChange={(e)=> setFilters({...filters,status:e.target.value})}
+              className="w-full border border-gray-300 rounded-lg px-2 py-1 text-sm">
+                <option>Status: All</option>
+                <option>To Do</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+
+              <select 
+              value={filters.assignee}
+              onChange={(e)=> setFilters({...filters,assignee:e.target.value})}
+              className="w-full border border-gray-300 rounded-lg px-2 py-1 text-sm">
+                <option>Assignee: All</option>
+                <option>Varun Pal</option>
+                <option>Rahul Sharma</option>
+                <option>Priya Singh</option>
+                <option>Amit Patel</option>
+                <option>Sneha Gupta</option>
+                <option>Rajesh Kumar</option>
+                <option>Amit Patil</option>
+
+
+
+              </select>
+
+              <button className="text-blue-600 text-sm flex items-center gap-1">
+                + More
+              </button>
+
+            </div>
+
+            {/* bottom btns */}
+            <div className="mt-auto flex justify-between items-center gap-3 pt-3 border-t">
+              <input type="text"
+                placeholder="Name this view..."
+                className="flex-1 border rounded-lg px-3 py-2 text-sm"              
+              />
+              <button
+                
+               className="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 text-sm">
+                Save new view
+              </button>
+
+            </div>
+
+
+          </div>
+          </div>
+        )
+      }
 
       {/* Search Header*/}
       <div className="p-4 border-b-gray-300 border-b">
@@ -88,13 +206,13 @@ function TicketList({ toggleViews }) {
 
               {/* Bottom Left */}
               <span className="text-xs font-medium text-gray-500">
-                APPS_216
+                {ticket.project} - {ticket.type}
               </span>
 
               {/* Bottom Right */}
               <div className="flex items-center gap-3">
                 <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">
-                  To Do
+                  {ticket.status}
                 </span>
 
                 {/* Pfp Icon */}
@@ -108,8 +226,8 @@ function TicketList({ toggleViews }) {
         ))}
 
       </div>
-
-    </div>
+      
+</div>
   )
 }
 

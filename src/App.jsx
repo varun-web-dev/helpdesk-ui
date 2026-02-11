@@ -27,11 +27,11 @@ function App() {
       </div>
       )}
 
-    <div className={`flex-1 flex transition ${showViews ? "w-[350px] " : "w-[500px] "} transition-all duration-300 border-r`}>
+    <div className={`flex-1 flex transition ${showViews ? "w-100 " : "w-125 "} transition-all duration-300 border-r`}>
       <TicketList toggleViews={() => setShowViews(!showViews)} />
       </div>
 
-      <div className={`flex-1 ${showViews ? "w-124" : "w-187"} transition-all duration-300`}>
+      <div className={`flex-1 ${showViews ? "w-114" : "w-172"} transition-all duration-300`}>
       <TicketDetails toggleViews={() => setShowViews(!showViews)}/>
       </div>
 

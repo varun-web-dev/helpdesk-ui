@@ -3,7 +3,7 @@ import { HiMenuAlt2 } from "react-icons/hi"
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2"
 import { BiSearchAlt } from "react-icons/bi"
 
-function TicketList() {
+function TicketList({ toggleViews }) {
   const [activeTicket, setActiveTicket] = useState(1);
   const [search,setSearch] = useState("")
 
@@ -22,12 +22,12 @@ function TicketList() {
   );
 
   return (
-    <div className="w-80 bg-[#f8fafc] border-r flex flex-col border border-gray-300">
+    <div className="w-auto bg-[#f8fafc] border-r flex flex-col border border-gray-300">
 
       {/* Header */}
       <div className="flex items-center justify-between border-b border-gray-300 p-4">
 
-        <HiMenuAlt2 className="text-2xl" />
+        <HiMenuAlt2 className="cursor-pointer text-2xl" onClick={toggleViews} />
 
         <select className="bg-transparent text-lg font-semibold outline-none ">
           <option>My Tickets</option>

@@ -16,7 +16,7 @@ const TicketViews = () => {
   ]
 
   return (
-    <div className="w-64 bg-gray-100 border-r p-2 border border-gray-300 rounded-tl-2xl">
+    <div className="w-64 h-full bg-gray-100 border-r p-2 border border-gray-300 rounded-tl-2xl">
 
       {/* Header */}
       <div

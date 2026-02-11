@@ -30,10 +30,10 @@ const TicketDetails = () => {
     }
   }
   return (
-    <div className="flex-1 bg-[#f8fafc] overflow-y-auto">
+    <div className="flex-1 bg-[#f8fafc] w-auto h-full ">
 
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-[#f8fafc] p-2 border-b border-gray-300">
+      <div className="sticky top-0 z-10 bg-[#f8fafc] p-2 border-b border-gray-300 w-300">
         <h2 className="text-lg font-bold text-gray-800">
           Laudantium neque veritatis
         </h2>

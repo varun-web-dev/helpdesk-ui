@@ -4,9 +4,11 @@ import TicketViews from "./components/TicketViews"
 import TicketList from "./components/TicketList"
 import TicketDetails from "./components/TicketDetails"
 import RightPanel from "./components/RightPanel"
+import { useState } from "react"
 
 
 function App() {
+  const [showViews, setShowViews] = useState(true);
 
   return (
     <>
@@ -18,9 +20,21 @@ function App() {
 
     <div className="flex flex-1 overflow-hidden">
       <IconSidebar />
-      <TicketViews />
-      <TicketList />
-      <TicketDetails />
+      {
+        showViews && (
+          <div className="w-auto">
+        <TicketViews />
+      </div>
+      )}
+
+    <div className={`flex-1 flex transition ${showViews ? "w-[350px] " : "w-[500px] "} transition-all duration-300 border-r`}>
+      <TicketList toggleViews={() => setShowViews(!showViews)} />
+      </div>
+
+      <div className={`flex-1 ${showViews ? "w-124" : "w-187"} transition-all duration-300`}>
+      <TicketDetails toggleViews={() => setShowViews(!showViews)}/>
+      </div>
+
       <RightPanel />
     </div>
 
